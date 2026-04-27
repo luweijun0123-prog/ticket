@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Player Ticket System</title>
+    <title>Tomb Busters Ticket System</title>
     <script src="https://cdn.tailwindcss.com">
     </script>
     <style>
         :root {
-            --bg-primary: #0b1120;
-            --bg-card: #111827;
-            --bg-panel: #0f172a;
-            --accent-red: #dc2626;
-            --accent-red-hover: #b91c1c;
-            --accent-blue: #2563eb;
-            --accent-blue-hover: #1d4ed8;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-subtle: #1e293b;
-            --gold: #f0b90b;
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --blue-800: #1e40af;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --red-700: #b91c1c;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --white: #ffffff;
         }
 
         * {
@@ -28,8 +35,8 @@
         }
 
         body {
-            background: var(--bg-primary);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #eef2f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Helvetica Neue', sans-serif;
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -39,32 +46,34 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             background-image:
-                radial-gradient(ellipse at 50% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 100%, rgba(220, 38, 38, 0.05) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(240, 185, 11, 0.03) 0%, transparent 50%);
+                radial-gradient(ellipse at 15% 0%, rgba(37, 99, 235, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 100%, rgba(37, 99, 235, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 70%);
         }
 
-        /* Main card */
-        .ticket-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
+        /* Fixed‑size page wrapper: 640×960, centered */
+        .page-wrapper {
+            width: 640px;
+            max-width: 100%;
+            height: 960px;
+            max-height: 100vh;
+            margin: 0 auto;
             border-radius: 20px;
-            padding: 28px 24px 24px;
-            width: 100%;
-            max-width: 460px;
             box-shadow:
-                0 4px 32px rgba(0, 0, 0, 0.45),
-                0 1px 3px rgba(255, 255, 255, 0.03) inset,
-                0 0 0 1px rgba(255, 255, 255, 0.02);
-            position: relative;
+                0 24px 56px rgba(0, 0, 0, 0.10),
+                0 0 0 1px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
             overflow: hidden;
-            animation: cardEntry 0.5s ease-out;
+            animation: pageEnter 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+            position: relative;
         }
 
-        @keyframes cardEntry {
+        @keyframes pageEnter {
             from {
                 opacity: 0;
-                transform: translateY(18px) scale(0.97);
+                transform: translateY(24px) scale(0.98);
             }
             to {
                 opacity: 1;
@@ -72,447 +81,473 @@
             }
         }
 
-        /* Subtle top accent line */
-        .ticket-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20px;
-            right: 20px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            opacity: 0.5;
-            border-radius: 0 0 50% 50%;
+        /* Header */
+        .header-card {
+            background: linear-gradient(145deg, #1e3a8a 0%, #2563eb 40%, #3b82f6 100%);
+            border-radius: 20px 20px 0 0;
+            padding: 28px 30px 22px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 6px 28px rgba(37, 99, 235, 0.25);
+            z-index: 2;
         }
 
-        /* Decorative corner glows */
-        .ticket-card::after {
+        /* Decorative game‑style glow orbs */
+        .header-card::after {
             content: '';
             position: absolute;
-            top: -60px;
-            right: -60px;
+            top: -70px;
+            right: -40px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .header-card::before {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
             width: 140px;
             height: 140px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
-            pointer-events: none;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
             border-radius: 50%;
+            pointer-events: none;
         }
 
-        /* Header icon area */
-        .header-icon {
-            width: 52px;
-            height: 52px;
+        /* Small floating diamond decoration */
+        .header-decor {
+            position: absolute;
+            top: 14px;
+            right: 20px;
+            width: 22px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.12);
+            transform: rotate(45deg);
+            border-radius: 3px;
+            pointer-events: none;
+            animation: floatDiamond 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes floatDiamond {
+            0%,
+            100% {
+                transform: rotate(45deg) translateY(0);
+            }
+            50% {
+                transform: rotate(45deg) translateY(-8px);
+            }
+        }
+
+        .header-icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
+        }
+
+        /* Content area */
+        .content-card {
+            flex: 1;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 0 0 20px 20px;
+            padding: 22px 26px 26px;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        .content-card::-webkit-scrollbar {
+            width: 5px;
+        }
+        .content-card::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 4px 0;
+        }
+        .content-card::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 20px;
+        }
+
+        /* Function card */
+        .func-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px 20px 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .func-card:first-child {
+            margin-bottom: 18px;
+        }
+        .func-card:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 8px 28px rgba(37, 99, 235, 0.06);
+        }
+
+        /* Icon circles */
+        .func-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .func-icon.icon-submit {
+            background: #fef2f2;
+            color: #ef4444;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.12);
+        }
+        .func-icon.icon-check {
+            background: #eff6ff;
+            color: #2563eb;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+        }
+
+        /* Submit button – red gradient */
+        .btn-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.25px;
             border-radius: 14px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: none;
+            cursor: pointer;
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #ffffff;
+            background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+            min-height: 52px;
+            text-decoration: none;
+            -webkit-user-select: none;
+            user-select: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 4px 16px rgba(220, 38, 38, 0.28),
+                0 1px 2px rgba(255, 255, 255, 0.12) inset;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+        }
+        .btn-submit:hover:not(:disabled) {
+            background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+            box-shadow:
+                0 7px 24px rgba(220, 38, 38, 0.40),
+                0 1px 3px rgba(255, 255, 255, 0.18) inset;
+            transform: translateY(-2px);
+        }
+        .btn-submit:active:not(:disabled) {
+            transform: scale(0.97);
+            box-shadow:
+                0 2px 8px rgba(220, 38, 38, 0.25),
+                0 0px 1px rgba(255, 255, 255, 0.08) inset;
+            transition: all 0.06s ease;
+        }
+        .btn-submit:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+            box-shadow: none;
+            text-shadow: none;
+            pointer-events: auto;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Check button – blue gradient */
+        .btn-check {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.25px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #ffffff;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            min-height: 52px;
+            text-decoration: none;
+            -webkit-user-select: none;
+            user-select: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 4px 16px rgba(37, 99, 235, 0.28),
+                0 1px 2px rgba(255, 255, 255, 0.15) inset;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+        }
+        .btn-check:hover {
+            background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+            box-shadow:
+                0 7px 24px rgba(37, 99, 235, 0.40),
+                0 1px 3px rgba(255, 255, 255, 0.22) inset;
+            transform: translateY(-2px);
+        }
+        .btn-check:active {
+            transform: scale(0.97);
+            box-shadow:
+                0 2px 8px rgba(37, 99, 235, 0.25),
+                0 0px 1px rgba(255, 255, 255, 0.10) inset;
+            transition: all 0.06s ease;
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.50);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+            border-radius: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Modal dialog */
+        .modal-dialog {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 28px 24px 22px;
+            width: 85%;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            animation: dialogPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        @keyframes dialogPop {
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-icon-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fef2f2;
+            margin: 0 auto 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 26px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Submit button - red */
-        .btn-submit {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 15px 24px;
-            font-size: 17px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            border-radius: 14px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            color: #ffffff;
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            box-shadow:
-                0 4px 16px rgba(220, 38, 38, 0.35),
-                0 1px 2px rgba(255, 255, 255, 0.08) inset;
-            min-height: 54px;
-            text-decoration: none;
-            -webkit-user-select: none;
-            user-select: none;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn-submit:hover:not(:disabled) {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow:
-                0 6px 24px rgba(220, 38, 38, 0.5),
-                0 2px 4px rgba(255, 255, 255, 0.1) inset;
-            transform: translateY(-1px);
-        }
-
-        .btn-submit:active:not(:disabled) {
-            transform: translateY(1px) scale(0.985);
-            box-shadow:
-                0 2px 8px rgba(220, 38, 38, 0.3),
-                0 0px 1px rgba(255, 255, 255, 0.05) inset;
-            transition: all 0.1s ease;
-        }
-
-        .btn-submit:disabled {
-            background: #374151;
-            color: #6b7280;
-            cursor: not-allowed;
-            box-shadow: none;
-            pointer-events: none;
-            border: 1px solid #4b5563;
-        }
-
-        .btn-submit.pulse-active {
-            animation: subtlePulseRed 2.2s ease-in-out infinite;
-        }
-
-        @keyframes subtlePulseRed {
-            0%,
-            100% {
-                box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35), 0 1px 2px rgba(255, 255, 255, 0.08) inset;
-            }
-            50% {
-                box-shadow: 0 6px 28px rgba(239, 68, 68, 0.55), 0 2px 4px rgba(255, 255, 255, 0.12) inset;
-            }
-        }
-
-        /* Check button - blue */
-        .btn-check {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 15px 24px;
-            font-size: 17px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            border-radius: 14px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            color: #ffffff;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            box-shadow:
-                0 4px 16px rgba(37, 99, 235, 0.35),
-                0 1px 2px rgba(255, 255, 255, 0.08) inset;
-            min-height: 54px;
-            text-decoration: none;
-            -webkit-user-select: none;
-            user-select: none;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn-check:hover {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            box-shadow:
-                0 6px 24px rgba(37, 99, 235, 0.5),
-                0 2px 4px rgba(255, 255, 255, 0.1) inset;
-            transform: translateY(-1px);
-        }
-
-        .btn-check:active {
-            transform: translateY(1px) scale(0.985);
-            box-shadow:
-                0 2px 8px rgba(37, 99, 235, 0.3),
-                0 0px 1px rgba(255, 255, 255, 0.05) inset;
-            transition: all 0.1s ease;
-        }
-
-        /* Status badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            transition: all 0.3s ease;
-        }
-
-        .status-badge.active {
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-            border: 1px solid rgba(34, 197, 94, 0.25);
-        }
-
-        .status-badge.expired {
-            background: rgba(239, 68, 68, 0.12);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.25);
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            display: inline-block;
-            flex-shrink: 0;
-        }
-
-        .status-dot.green {
-            background: #4ade80;
-            box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
-            animation: dotPulseGreen 1.8s ease-in-out infinite;
-        }
-
-        .status-dot.red {
-            background: #f87171;
-            box-shadow: 0 0 6px rgba(248, 113, 113, 0.5);
-        }
-
-        @keyframes dotPulseGreen {
-            0%,
-            100% {
-                box-shadow: 0 0 4px rgba(74, 222, 128, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 12px rgba(74, 222, 128, 0.75);
-            }
-        }
-
-        /* Device info panel */
-        .device-panel {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .device-row {
-            display: flex;
-            align-items: flex-start;
-            padding: 7px 0;
-            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .device-row:last-child {
-            border-bottom: none;
-        }
-
-        .device-label {
-            color: #94a3b8;
-            flex-shrink: 0;
-            width: 80px;
-            font-weight: 500;
-            letter-spacing: 0.2px;
-        }
-
-        .device-value {
-            color: #e2e8f0;
-            word-break: break-all;
-            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
-            font-size: 12px;
-            letter-spacing: 0.1px;
-        }
-
-        /* Countdown text */
-        .countdown-text {
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-align: center;
-            transition: color 0.3s ease;
-        }
-
-        .countdown-text.warning {
-            color: #fbbf24;
-        }
-
-        .countdown-text.danger {
-            color: #f87171;
-            animation: blinkWarning 0.8s ease-in-out infinite;
-        }
-
-        .countdown-text.expired-label {
             color: #ef4444;
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.18);
         }
-
-        @keyframes blinkWarning {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
+        .modal-close-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: #2563eb;
+            color: #ffffff;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
         }
-
-        /* Divider */
-        .divider-glow {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.2), transparent);
-            margin: 20px 0;
+        .modal-close-btn:hover {
+            background: #1d4ed8;
+            box-shadow: 0 5px 16px rgba(37, 99, 235, 0.35);
         }
-
-        /* Screen reader only */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+        .modal-close-btn:active {
+            transform: scale(0.95);
         }
 
         /* Responsive adjustments */
-        @media (max-width: 380px) {
-            .ticket-card {
-                padding: 22px 16px 18px;
-                border-radius: 16px;
+        @media (max-width: 680px) {
+            .page-wrapper {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+                max-height: none;
+            }
+            .header-card {
+                border-radius: 0;
+                padding: 20px 18px 16px;
+            }
+            .content-card {
+                border-radius: 0;
+                padding: 14px 14px 16px;
+            }
+            .func-card {
+                padding: 16px 14px 14px;
             }
             .btn-submit,
             .btn-check {
                 padding: 13px 16px;
-                font-size: 15px;
-                border-radius: 12px;
+                font-size: 16px;
                 min-height: 48px;
+                border-radius: 13px;
             }
-            .device-label {
-                width: 65px;
-                font-size: 11px;
-            }
-            .device-value {
-                font-size: 11px;
-            }
-            .header-icon {
-                width: 42px;
-                height: 42px;
-                font-size: 22px;
+            .header-icon-circle {
+                width: 40px;
+                height: 40px;
                 border-radius: 12px;
             }
-        }
-
-        @media (min-width: 420px) {
-            .btn-submit,
-            .btn-check {
-                padding: 16px 28px;
-                font-size: 18px;
-                min-height: 58px;
-                border-radius: 16px;
+            .func-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 11px;
+            }
+            .modal-overlay {
+                border-radius: 0;
+            }
+            .header-decor {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <main class="ticket-card" role="main" aria-label="Player Ticket System">
+    <main class="page-wrapper" role="main" aria-label="Tomb Busters Ticket System">
+
         <!-- Header -->
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;position:relative;z-index:1;">
-            <div class="header-icon" aria-hidden="true">🎮</div>
-            <div>
-                <h1 style="font-size:22px;font-weight:700;color:#f1f5f9;letter-spacing:0.3px;margin:0;line-height:1.2;">
-                    Player Ticket System
-                </h1>
-                <p style="font-size:13px;color:#94a3b8;margin:4px 0 0;letter-spacing:0.2px;">
-                    Submit or check your support tickets
-                </p>
+        <div class="header-card">
+            <!-- Decorative floating diamond -->
+            <div class="header-decor" aria-hidden="true"></div>
+
+            <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1;">
+                <div class="header-icon-circle" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 style="font-size:21px;font-weight:700;color:#ffffff;margin:0;line-height:1.3;letter-spacing:0.2px;">
+                        Tomb Busters Ticket System
+                    </h1>
+                    <p style="font-size:13px;color:rgba(255,255,255,0.78);margin:3px 0 0;letter-spacing:0.15px;">
+                        Player support center
+                    </p>
+                </div>
             </div>
         </div>
 
-        <!-- Divider -->
-        <div class="divider-glow"></div>
+        <!-- Content Area -->
+        <div class="content-card">
 
-        <!-- Submit Ticket Section -->
-        <section style="margin-bottom:16px;" aria-labelledby="submit-section-label">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
-                <span id="submit-section-label" style="font-size:14px;font-weight:600;color:#e2e8f0;letter-spacing:0.2px;">
-                    📝 Submit a Ticket
-                </span>
-                <span id="submitStatusBadge" class="status-badge active" aria-live="polite">
-                    <span class="status-dot green"></span> Active
-                </span>
+            <!-- Submit Ticket Card -->
+            <div class="func-card">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                    <div class="func-icon icon-submit" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                    </div>
+                    <span style="font-size:16px;font-weight:600;color:#1f2937;letter-spacing:0.15px;">
+                        Submit a Ticket
+                    </span>
+                </div>
+                <button
+                id="btnSubmit"
+                class="btn-submit"
+                aria-label="Submit a new support ticket"
+                title="Submit Ticket"
+                disabled
+            >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Submit Ticket
+        </button>
+    </div>
+
+    <!-- Check Ticket Card -->
+    <div class="func-card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div class="func-icon icon-check" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
             </div>
-            <button
-            id="btnSubmit"
-            class="btn-submit pulse-active"
-            aria-label="Submit a new support ticket"
-            title="Submit Ticket"
-        >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-        Submit Ticket
-    </button>
-    <p id="submitCountdown" class="countdown-text warning" style="margin-top:8px;" aria-live="polite">
-        Loading...
-    </p>
-</section>
-
-<!-- Divider -->
-<div class="divider-glow"></div>
-
-<!-- Check Ticket Section -->
-<section style="margin-bottom:18px;" aria-labelledby="check-section-label">
-    <span id="check-section-label" style="font-size:14px;font-weight:600;color:#e2e8f0;display:block;margin-bottom:8px;letter-spacing:0.2px;">
-        🔍 Check Ticket Status
-    </span>
-    <button
-    id="btnCheck"
-    class="btn-check"
-    aria-label="Check existing ticket status"
-    title="Check Ticket"
->
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-Check Ticket
+            <span style="font-size:16px;font-weight:600;color:#1f2937;letter-spacing:0.15px;">
+                Check Ticket Status
+            </span>
+        </div>
+        <button
+        id="btnCheck"
+        class="btn-check"
+        aria-label="Check existing ticket status"
+        title="Check Ticket"
+    >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="M21 21l-4.35-4.35"/>
+    </svg>
+    Check Ticket
 </button>
-<p style="font-size:12px;color:#64748b;text-align:center;margin-top:6px;">
-    Always available &mdash; no time limit
-</p>
-</section>
+</div>
+</div>
 
-<!-- Divider -->
-<div class="divider-glow"></div>
+<!-- Modal Overlay -->
+<div id="modalOverlay" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expired notification">
+    <div class="modal-dialog">
+        <div class="modal-icon-circle" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="13"/>
+                <circle cx="12" cy="16.5" r="0.8" fill="currentColor" stroke="none"/>
+            </svg>
+        </div>
+        <p style="font-size:18px;font-weight:700;color:#1f2937;margin:0 0 6px;letter-spacing:0.2px;">
+            Link expired
+        </p>
+        <p style="font-size:13px;color:#6b7280;margin:0 0 2px;line-height:1.5;">
+            The submission window has closed or this link has already been used.
+        </p>
+        <button id="modalCloseBtn" class="modal-close-btn" type="button">
+            OK
+        </button>
+    </div>
+</div>
 
-<!-- Device Information Panel -->
-<section class="device-panel" aria-labelledby="device-info-label">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <span style="font-size:15px;" aria-hidden="true">📱</span>
-        <span id="device-info-label" style="font-size:13px;font-weight:700;color:#cbd5e1;letter-spacing:0.3px;text-transform:uppercase;">
-            Device Information
-        </span>
-        <span style="font-size:11px;color:#64748b;margin-left:auto;" id="deviceDetectStatus">Detected</span>
-    </div>
-    <div id="deviceInfoContainer">
-        <div class="device-row">
-            <span class="device-label">Device</span>
-            <span class="device-value" id="devDevice">Detecting...</span>
-        </div>
-        <div class="device-row">
-            <span class="device-label">OS</span>
-            <span class="device-value" id="devOS">Detecting...</span>
-        </div>
-        <div class="device-row">
-            <span class="device-label">Browser</span>
-            <span class="device-value" id="devBrowser">Detecting...</span>
-        </div>
-        <div class="device-row">
-            <span class="device-label">Screen</span>
-            <span class="device-value" id="devScreen">Detecting...</span>
-        </div>
-        <div class="device-row">
-            <span class="device-label">UA</span>
-            <span class="device-value" id="devUA" style="font-size:10px;max-height:50px;overflow-y:auto;display:block;">Detecting...</span>
-        </div>
-    </div>
-</section>
 </main>
 
 <script>
@@ -520,50 +555,35 @@ Check Ticket
         // ============================================================
         // Constants
         // ============================================================
-        const SUBMIT_URL_BASE =
-            'https://giantnetwork.qiyukf.com/worksheet/page/plugin/submit?pluginId=a105e6dee58a4b77868640c1418f704&type=1';
-        const CHECK_URL_BASE =
-            'https://giantnetwork.qiyukf.com/worksheet/page/plugin/list?pluginId=a105e6dee58a4b77868640c1418f704&type=1';
-        const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
-        const STORAGE_KEY_OPEN_TIME = 'ticket_page_open_time_v2';
-        const STORAGE_KEY_DEVICE_INFO = 'ticket_device_info_v2';
-        const COUNTDOWN_WARNING_THRESHOLD = 10 * 60; // 10 minutes in seconds - show warning
+        const SUBMIT_URL =
+            'https://giantnetwork.qiyukf.com/worksheet/page/plugin/submit?pluginId=a105e6dee58a4b778686440c1418f704&type=1';
+        const CHECK_URL =
+            'https://giantnetwork.qiyukf.com/worksheet/page/plugin/list?pluginId=a105e6dee58a4b778686440c1418f704&type=1';
+        const WINDOW_MINUTES = 5; // Submission window: 5 minutes
+        const WINDOW_MS = WINDOW_MINUTES * 60 * 1000;
+        const STORAGE_KEY = 'tomb_ticket_session_v2'; // Key for localStorage
 
         // ============================================================
-        // DOM Element References
+        // DOM Elements
         // ============================================================
         const btnSubmit = document.getElementById('btnSubmit');
         const btnCheck = document.getElementById('btnCheck');
-        const submitCountdown = document.getElementById('submitCountdown');
-        const submitStatusBadge = document.getElementById('submitStatusBadge');
-        const deviceDetectStatus = document.getElementById('deviceDetectStatus');
-
-        // Device info display elements
-        const devDevice = document.getElementById('devDevice');
-        const devOS = document.getElementById('devOS');
-        const devBrowser = document.getElementById('devBrowser');
-        const devScreen = document.getElementById('devScreen');
-        const devUA = document.getElementById('devUA');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
 
         // ============================================================
         // State
         // ============================================================
-        let openTime = null; // Timestamp when page was first opened
-        let expireTime = null; // Timestamp when Submit link expires
-        let isExpired = false; // Current expiration state
-        let deviceInfo = null; // Cached device information object
-        let countdownIntervalId = null; // Interval ID for countdown updates
-        let storageAvailable = true; // Whether localStorage is usable
+        let sessionData = null; // { code, createdAt, used }
+        let windowTimerId = null; // Timer for 5‑minute auto‑expiry
 
         // ============================================================
-        // Utility: Safe localStorage operations
+        // Safe localStorage helpers
         // ============================================================
         function safeGetItem(key) {
             try {
-                const val = localStorage.getItem(key);
-                return val;
+                return localStorage.getItem(key);
             } catch (e) {
-                storageAvailable = false;
                 return null;
             }
         }
@@ -573,7 +593,6 @@ Check Ticket
                 localStorage.setItem(key, value);
                 return true;
             } catch (e) {
-                storageAvailable = false;
                 return false;
             }
         }
@@ -583,472 +602,295 @@ Check Ticket
                 localStorage.removeItem(key);
                 return true;
             } catch (e) {
-                storageAvailable = false;
                 return false;
             }
         }
 
         // ============================================================
-        // Device Detection Engine
+        // Generate a unique time‑based code
+        // Format: timestamp_randomHex
         // ============================================================
-        function detectDeviceInfo() {
-            const ua = navigator.userAgent;
-            const screenWidth = window.screen.width;
-            const screenHeight = window.screen.height;
-            const dpr = window.devicePixelRatio || 1;
-            const maxTouchPoints = navigator.maxTouchPoints || 0;
-            const hasTouch = maxTouchPoints > 0;
-            const cssWidth = window.innerWidth;
-
-            // Determine device type
-            let deviceType = 'Desktop';
-            if (hasTouch) {
-                if (/(iPhone|iPod)/i.test(ua)) {
-                    deviceType = 'Mobile';
-                } else if (/(iPad)/i.test(ua) || (/Macintosh/i.test(ua) && hasTouch && maxTouchPoints >= 2)) {
-                    deviceType = 'Tablet';
-                } else if (/Android/i.test(ua)) {
-                    if (/Tablet/i.test(ua) || cssWidth >= 768) {
-                        deviceType = 'Tablet';
-                    } else {
-                        deviceType = 'Mobile';
-                    }
-                } else if (cssWidth < 768) {
-                    deviceType = 'Mobile';
-                } else if (cssWidth < 1024) {
-                    deviceType = 'Tablet';
-                }
-            }
-
-            // Determine operating system
-            let osName = 'Unknown';
-            if (/Windows NT/i.test(ua)) {
-                const winMatch = ua.match(/Windows NT (\d+\.\d+)/i);
-                osName = winMatch ? `Windows ${winMatch[1]}` : 'Windows';
-                // Map NT versions to marketing names
-                if (winMatch && winMatch[1] === '10.0') osName = 'Windows 10/11';
-                if (winMatch && winMatch[1] === '6.3') osName = 'Windows 8.1';
-                if (winMatch && winMatch[1] === '6.2') osName = 'Windows 8';
-                if (winMatch && winMatch[1] === '6.1') osName = 'Windows 7';
-            } else if (/Mac OS X/i.test(ua)) {
-                const macMatch = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/i);
-                osName = macMatch ? `macOS ${macMatch[1].replace(/_/g, '.')}` : 'macOS';
-            } else if (/iPhone|iPad|iPod/i.test(ua)) {
-                const iosMatch = ua.match(/OS (\d+[._]\d+[._]?\d*)/i);
-                osName = iosMatch ? `iOS ${iosMatch[1].replace(/_/g, '.')}` : 'iOS';
-            } else if (/Android/i.test(ua)) {
-                const androidMatch = ua.match(/Android (\d+[\.\d]*)/i);
-                osName = androidMatch ? `Android ${androidMatch[1]}` : 'Android';
-            } else if (/Linux/i.test(ua)) {
-                osName = 'Linux';
-            } else if (/CrOS/i.test(ua)) {
-                osName = 'Chrome OS';
-            }
-
-            // Determine browser
-            let browserName = 'Unknown';
-            let browserVersion = '';
-            if (/Edg\//i.test(ua)) {
-                browserName = 'Edge';
-                const m = ua.match(/Edg\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            } else if (/OPR\//i.test(ua) || /Opera/i.test(ua)) {
-                browserName = 'Opera';
-                const m = ua.match(/OPR\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            } else if(/Chrome/i.test(ua) && !/Chromium/i.test(ua)) {
-                browserName = 'Chrome';
-                const m = ua.match(/Chrome\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            } else if (/Safari/i.test(ua) && !/Chrome|Chromium/i.test(ua)) {
-                browserName = 'Safari';
-                const m = ua.match(/Version\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            } else if (/Firefox/i.test(ua)) {
-                browserName = 'Firefox';
-                const m = ua.match(/Firefox\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            } else if (/Chromium/i.test(ua)) {
-                browserName = 'Chromium';
-                const m = ua.match(/Chromium\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            } else if (/SamsungBrowser/i.test(ua)) {
-                browserName = 'Samsung Internet';
-                const m = ua.match(/SamsungBrowser\/(\d+[\.\d]*)/i);
-                if (m) browserVersion = m[1];
-            }
-
-            const browserFull = browserVersion ? `${browserName} ${browserVersion}` : browserName;
-            const screenInfo = `${screenWidth}x${screenHeight} @${dpr}x (CSS: ${cssWidth}px)`;
-
-            return {
-                deviceType: deviceType,
-                os: osName,
-                browser: browserFull,
-                screen: screenInfo,
-                screenRaw: `${screenWidth}x${screenHeight}`,
-                dpr: dpr,
-                cssWidth: cssWidth,
-                ua: ua,
-                detectedAt: new Date().toISOString(),
-            };
+        function generateUniqueCode() {
+            const now = Date.now();
+            const randomPart = Math.random().toString(36).substring(2, 12);
+            return now.toString(36) + '_' + randomPart;
         }
 
         // ============================================================
-        // Update device info display in the UI
+        // Load existing session from localStorage, or create a new one
         // ============================================================
-        function updateDeviceDisplay(info) {
-            if (devDevice) devDevice.textContent = info.deviceType;
-            if (devOS) devOS.textContent = info.os;
-            if (devBrowser) devBrowser.textContent = info.browser;
-            if (devScreen) devScreen.textContent = info.screen;
-            if (devUA) devUA.textContent = info.ua;
-            if (deviceDetectStatus) {
-                deviceDetectStatus.textContent = 'Detected';
-                deviceDetectStatus.style.color = '#4ade80';
-            }
-        }
-
-        // ============================================================
-        // Persist device info
-        // ============================================================
-        function saveDeviceInfo(info) {
-            deviceInfo = info;
-            try {
-                safeSetItem(STORAGE_KEY_DEVICE_INFO, JSON.stringify(info));
-            } catch (e) {
-                // Silently fail - device info is still available in memory
-            }
-        }
-
-        function loadCachedDeviceInfo() {
-            try {
-                const cached = safeGetItem(STORAGE_KEY_DEVICE_INFO);
-                if (cached) {
-                    const parsed = JSON.parse(cached);
-                    return parsed;
-                }
-            } catch (e) {
-                // Corrupted cache - ignore
-            }
-            return null;
-        }
-
-        // ============================================================
-        // Build URL with device info query parameters
-        // ============================================================
-        function buildUrlWithDeviceParams(baseUrl) {
-            if (!deviceInfo) {
-                return baseUrl;
-            }
-            try {
-                const url = new URL(baseUrl);
-                url.searchParams.set('device', deviceInfo.deviceType);
-                url.searchParams.set('os', deviceInfo.os);
-                url.searchParams.set('browser', encodeURIComponent(deviceInfo.browser));
-                url.searchParams.set('screen', deviceInfo.screenRaw);
-                url.searchParams.set('ua', encodeURIComponent(deviceInfo.ua));
-                url.searchParams.set('_t', Date.now().toString()); // Cache-buster
-                return url.toString();
-            } catch (e) {
-                // If URL parsing fails, do manual concatenation
-                const params = new URLSearchParams();
-                params.set('device', deviceInfo.deviceType);
-                params.set('os', deviceInfo.os);
-                params.set('browser', deviceInfo.browser);
-                params.set('screen', deviceInfo.screenRaw);
-                params.set('ua', deviceInfo.ua);
-                params.set('_t', Date.now().toString());
-                const separator = baseUrl.includes('?') ? '&' : '?';
-                return baseUrl + separator + params.toString();
-            }
-        }
-
-        // ============================================================
-        // Time & Expiration Logic
-        // ============================================================
-        function initializeOpenTime() {
-            const stored = safeGetItem(STORAGE_KEY_OPEN_TIME);
+        function loadOrCreateSession() {
+            const stored = safeGetItem(STORAGE_KEY);
             if (stored) {
-                const parsed = parseInt(stored, 10);
-                if (!isNaN(parsed) && parsed > 0) {
-                    openTime = parsed;
-                } else {
-                    openTime = Date.now();
-                    safeSetItem(STORAGE_KEY_OPEN_TIME, openTime.toString());
+                try {
+                    const parsed = JSON.parse(stored);
+                    // Validate structure
+                    if (parsed && typeof parsed.code === 'string' &&
+                        typeof parsed.createdAt === 'number' &&
+                        typeof parsed.used === 'boolean') {
+                        // Check if the session is still within the 5‑minute window
+                        const age = Date.now() - parsed.createdAt;
+                        if (age < WINDOW_MS) {
+                            // Session is still valid (may be used or unused)
+                            return parsed;
+                        }
+                        // Session expired – it will be replaced below
+                    }
+                } catch (e) {
+                    // Corrupted data – ignore and create new
                 }
-            } else {
-                openTime = Date.now();
-                safeSetItem(STORAGE_KEY_OPEN_TIME, openTime.toString());
             }
-            expireTime = openTime + ONE_HOUR_MS;
-            isExpired = Date.now() >= expireTime;
-        }
-
-        function getRemainingSeconds() {
-            if (isExpired) return 0;
-            const remaining = Math.max(0, Math.floor((expireTime - Date.now()) / 1000));
-            return remaining;
-        }
-
-        function formatCountdown(totalSeconds) {
-            if (totalSeconds <= 0) return '00:00';
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }
-
-        function getCountdownCSSClass(totalSeconds) {
-            if (totalSeconds <= 0) return 'expired-label';
-            if (totalSeconds <= COUNTDOWN_WARNING_THRESHOLD) return 'danger';
-            if (totalSeconds <= 20 * 60) return 'warning';
-            return '';
-        }
-
-        function getCountdownLabel(totalSeconds) {
-            if (totalSeconds <= 0) return 'Link expired';
-            const formatted = formatCountdown(totalSeconds);
-            if (totalSeconds <= COUNTDOWN_WARNING_THRESHOLD) {
-                return `⏰ Expires in ${formatted} — Act fast!`;
-            }
-            return `⏳ Expires in ${formatted}`;
+            // No valid session found – create a brand‑new one
+            const newSession = {
+                code: generateUniqueCode(),
+                createdAt: Date.now(),
+                used: false,
+            };
+            safeSetItem(STORAGE_KEY, JSON.stringify(newSession));
+            return newSession;
         }
 
         // ============================================================
-        // Update Submit button UI based on expiration state
+        // Save the current session data to localStorage
+        // ============================================================
+        function saveSession() {
+            if (sessionData) {
+                safeSetItem(STORAGE_KEY, JSON.stringify(sessionData));
+            }
+        }
+
+        // ============================================================
+        // Check if submission is currently allowed
+        // ============================================================
+        function canSubmit() {
+            if (!sessionData) return false;
+            const now = Date.now();
+            // Must be within the 5‑minute window
+            if (now - sessionData.createdAt >= WINDOW_MS) return false;
+            // Must not have been used yet
+            if (sessionData.used) return false;
+            return true;
+        }
+
+        // ============================================================
+        // Update the submit button visual state
         // ============================================================
         function updateSubmitButtonState() {
-            const now = Date.now();
-            const wasExpired = isExpired;
-            isExpired = now >= expireTime;
-            const remaining = getRemainingSeconds();
-
-            if (isExpired) {
-                // Disable submit button
-                btnSubmit.disabled = true;
-                btnSubmit.classList.remove('pulse-active');
-                btnSubmit.style.cursor = 'not-allowed';
-                btnSubmit.setAttribute('aria-disabled', 'true');
-                btnSubmit.title = 'Link expired — Submit ticket is no longer available';
-
-                // Update status badge
-                submitStatusBadge.className = 'status-badge expired';
-                submitStatusBadge.innerHTML = '<span class="status-dot red"></span> Expired';
-
-                // Update countdown text
-                submitCountdown.className = 'countdown-text expired-label';
-                submitCountdown.textContent = '🔒 Link expired — Submit is disabled';
-
-                // If just now expired, clear the countdown interval
-                if (!wasExpired && countdownIntervalId) {
-                    clearInterval(countdownIntervalId);
-                    countdownIntervalId = null;
-                }
-            } else {
-                // Button is active
+            if (canSubmit()) {
                 btnSubmit.disabled = false;
-                btnSubmit.classList.add('pulse-active');
-                btnSubmit.style.cursor = 'pointer';
                 btnSubmit.setAttribute('aria-disabled', 'false');
-                btnSubmit.title = 'Submit a new support ticket';
-
-                // Update status badge
-                submitStatusBadge.className = 'status-badge active';
-                submitStatusBadge.innerHTML = '<span class="status-dot green"></span> Active';
-
-                // Update countdown
-                const cssClass = getCountdownCSSClass(remaining);
-                submitCountdown.className = 'countdown-text ' + cssClass;
-                submitCountdown.textContent = getCountdownLabel(remaining);
+                btnSubmit.title = 'Submit a new ticket';
+            } else {
+                btnSubmit.disabled = true;
+                btnSubmit.setAttribute('aria-disabled', 'true');
+                btnSubmit.title = 'Submission unavailable';
             }
         }
 
         // ============================================================
-        // Start the countdown timer
+        // Show the "Link expired" modal dialog
         // ============================================================
-        function startCountdown() {
-            // Clear any existing interval
-            if (countdownIntervalId) {
-                clearInterval(countdownIntervalId);
-                countdownIntervalId = null;
-            }
+        function showExpiredModal() {
+            modalOverlay.classList.add('active');
+            modalOverlay.setAttribute('aria-hidden', 'false');
+            // Focus the close button for accessibility
+            setTimeout(function() {
+                modalCloseBtn.focus();
+            }, 100);
+        }
 
-            // Initial update
+        // ============================================================
+        // Hide the modal dialog
+        // ============================================================
+        function hideExpiredModal() {
+            modalOverlay.classList.remove('active');
+            modalOverlay.setAttribute('aria-hidden', 'true');
+        }
+
+        // ============================================================
+        // Handle the 5‑minute window expiration (auto‑disable)
+        // ============================================================
+        function onWindowExpire() {
+            windowTimerId = null;
             updateSubmitButtonState();
-
-            // If already expired, no need for interval
-            if (isExpired) {
-                return;
+            // Clean up expired session so a page refresh generates a fresh one
+            if (sessionData && Date.now() - sessionData.createdAt >= WINDOW_MS) {
+                safeRemoveItem(STORAGE_KEY);
             }
-
-            // Set interval to update every second
-            countdownIntervalId = setInterval(function() {
-                updateSubmitButtonState();
-                // If expired during this tick, clear interval
-                if (isExpired && countdownIntervalId) {
-                    clearInterval(countdownIntervalId);
-                    countdownIntervalId = null;
-                }
-            }, 1000);
         }
 
         // ============================================================
-        // Button Click Handlers
+        // Schedule the auto‑expiry timer
+        // ============================================================
+        function scheduleWindowExpiration() {
+            if (windowTimerId) clearTimeout(windowTimerId);
+            if (!sessionData) return;
+            const elapsed = Date.now() - sessionData.createdAt;
+            const remaining = WINDOW_MS - elapsed;
+            if (remaining <= 0) {
+                onWindowExpire();
+            } else {
+                windowTimerId = setTimeout(onWindowExpire, remaining + 80);
+            }
+        }
+
+        // ============================================================
+        // Button click handlers
         // ============================================================
         function handleSubmitClick(event) {
-            // Double-check expiration before allowing navigation
-            const now = Date.now();
-            if (now >= expireTime) {
-                event.preventDefault();
-                isExpired = true;
-                updateSubmitButtonState();
-                // Show a brief visual feedback
-                btnSubmit.style.transform = 'scale(0.95)';
+            event.preventDefault();
+
+            // Re‑evaluate in real time
+            if (!canSubmit()) {
+                // Show the modal with "Link expired"
+                showExpiredModal();
+                // Brief button shake feedback
+                btnSubmit.style.transform = 'scale(0.94)';
                 setTimeout(function() {
                     btnSubmit.style.transform = '';
-                }, 150);
+                }, 140);
                 return false;
             }
 
-            // Refresh device info before navigating
-            const freshInfo = detectDeviceInfo();
-            saveDeviceInfo(freshInfo);
-            updateDeviceDisplay(freshInfo);
+            // Mark session as used
+            sessionData.used = true;
+            saveSession();
 
-            // Build URL with device parameters
-            const targetUrl = buildUrlWithDeviceParams(SUBMIT_URL_BASE);
+            // Update button immediately
+            updateSubmitButtonState();
 
-            // Navigate
-            window.location.href = targetUrl;
+            // Clear the expiry timer since submission happened
+            if (windowTimerId) {
+                clearTimeout(windowTimerId);
+                windowTimerId = null;
+            }
+
+            // Navigate to the submit URL
+            window.location.href = SUBMIT_URL;
             return true;
         }
 
         function handleCheckClick(event) {
-            // Refresh device info before navigating
-            const freshInfo = detectDeviceInfo();
-            saveDeviceInfo(freshInfo);
-            updateDeviceDisplay(freshInfo);
-
-            // Build URL with device parameters
-            const targetUrl = buildUrlWithDeviceParams(CHECK_URL_BASE);
-
-            // Navigate
-            window.location.href = targetUrl;
+            // Always allowed – no restrictions
+            window.location.href = CHECK_URL;
         }
 
         // ============================================================
-        // Reset timer (for debugging - can be exposed via console)
+        // Modal event handlers
         // ============================================================
-        function resetTimer() {
-            safeRemoveItem(STORAGE_KEY_OPEN_TIME);
-            openTime = Date.now();
-            expireTime = openTime + ONE_HOUR_MS;
-            isExpired = false;
-            safeSetItem(STORAGE_KEY_OPEN_TIME, openTime.toString());
-            updateSubmitButtonState();
-            startCountdown();
+        function handleModalClose(event) {
+            event.preventDefault();
+            hideExpiredModal();
+            // Return focus to the submit button
+            btnSubmit.focus();
         }
-        // Expose for debugging via console: window.__resetTicketTimer()
-        window.__resetTicketTimer = resetTimer;
+
+        function handleOverlayClick(event) {
+            // Close only if the click target is the overlay itself (not the dialog)
+            if (event.target === modalOverlay) {
+                hideExpiredModal();
+                btnSubmit.focus();
+            }
+        }
+
+        function handleModalKeydown(event) {
+            if (event.key === 'Escape') {
+                hideExpiredModal();
+                btnSubmit.focus();
+            }
+            // Trap focus inside modal
+            if (event.key === 'Tab') {
+                const focusable = modalOverlay.querySelectorAll(
+                    'button, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            }
+        }
 
         // ============================================================
-        // Initialize Everything
+        // Initialize the page
         // ============================================================
         function init() {
-            // 1. Initialize open time from storage
-            initializeOpenTime();
+            // 1. Load or create session
+            sessionData = loadOrCreateSession();
 
-            // 2. Detect device info
-            const freshDeviceInfo = detectDeviceInfo();
+            // 2. Update submit button state
+            updateSubmitButtonState();
 
-            // 3. Check for cached device info and merge
-            const cachedInfo = loadCachedDeviceInfo();
-            if (cachedInfo && cachedInfo.ua === freshDeviceInfo.ua &&
-                cachedInfo.deviceType === freshDeviceInfo.deviceType) {
-                // Use cached info but update the timestamp
-                deviceInfo = cachedInfo;
-                deviceInfo.detectedAt = new Date().toISOString();
-            } else {
-                // Use fresh info
-                deviceInfo = freshDeviceInfo;
-            }
+            // 3. Schedule the 5‑minute auto‑expiry
+            scheduleWindowExpiration();
 
-            // 4. Persist device info
-            saveDeviceInfo(deviceInfo);
-
-            // 5. Update device display
-            updateDeviceDisplay(deviceInfo);
-
-            // 6. Start countdown and update button states
-            startCountdown();
-
-            // 7. Attach click handlers
+            // 4. Attach button listeners
             btnSubmit.addEventListener('click', handleSubmitClick);
             btnCheck.addEventListener('click', handleCheckClick);
 
-            // 8. Prevent double-tap zoom on buttons (mobile)
+            // 5. Attach modal listeners
+            modalCloseBtn.addEventListener('click', handleModalClose);
+            modalOverlay.addEventListener('click', handleOverlayClick);
+            document.addEventListener('keydown', handleModalKeydown);
+
+            // 6. Prevent double‑tap zoom on mobile buttons
             [btnSubmit, btnCheck].forEach(function(btn) {
-                btn.addEventListener('touchstart', function(e) {
-                    // Allow normal behavior, just prevent 300ms delay issues
-                }, { passive: true });
+                btn.addEventListener('touchstart', function() {}, { passive: true });
             });
 
-            // 9. Log initialization
-            console.log('[PlayerTicketSystem] Initialized successfully.');
-            console.log('[PlayerTicketSystem] Open time:', new Date(openTime).toISOString());
-            console.log('[PlayerTicketSystem] Expire time:', new Date(expireTime).toISOString());
-            console.log('[PlayerTicketSystem] Expired:', isExpired);
-            console.log('[PlayerTicketSystem] Device:', deviceInfo.deviceType, '| OS:', deviceInfo.os, '| Browser:', deviceInfo
-                .browser);
-            console.log('[PlayerTicketSystem] Storage available:', storageAvailable);
-            if (isExpired) {
-                console.log('[PlayerTicketSystem] Submit link has EXPIRED. Button disabled.');
-            } else {
-                const rem = getRemainingSeconds();
-                console.log('[PlayerTicketSystem] Submit link expires in', formatCountdown(rem), '(' + rem + 's)');
+            // 7. Debug logging
+            console.log('[TicketSystem] Session code:', sessionData.code);
+            console.log('[TicketSystem] Created at:', new Date(sessionData.createdAt).toISOString());
+            console.log('[TicketSystem] Used:', sessionData.used);
+            console.log('[TicketSystem] Can submit:', canSubmit());
+            if (!sessionData.used) {
+                const remaining = Math.max(0, WINDOW_MS - (Date.now() - sessionData.createdAt));
+                console.log('[TicketSystem] Window remaining:',
+                    Math.floor(remaining / 60000) + 'm ' +
+                    Math.floor((remaining % 60000) / 1000) + 's');
             }
         }
 
         // ============================================================
-        // Run initialization when DOM is fully ready
-        // ============================================================
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            // DOM already ready
-            init();
-        }
-
-        // ============================================================
-        // Handle page visibility changes - refresh state when tab becomes visible
+        // Handle tab visibility changes
         // ============================================================
         document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && !isExpired) {
-                // Refresh the countdown display when user returns to tab
+            if (!document.hidden && sessionData) {
+                // Re‑check state when user returns
                 updateSubmitButtonState();
-                // Restart interval if it was cleared
-                if (!countdownIntervalId && !isExpired) {
-                    countdownIntervalId = setInterval(function() {
-                        updateSubmitButtonState();
-                        if (isExpired && countdownIntervalId) {
-                            clearInterval(countdownIntervalId);
-                            countdownIntervalId = null;
-                        }
-                    }, 1000);
+                // Re‑schedule timer if still within window and not expired
+                if (canSubmit() && !windowTimerId) {
+                    scheduleWindowExpiration();
+                }
+                if (!canSubmit() && windowTimerId) {
+                    clearTimeout(windowTimerId);
+                    windowTimerId = null;
                 }
             }
         });
 
         // ============================================================
-        // Handle page unload - clean up interval
+        // Clean up on unload
         // ============================================================
         window.addEventListener('beforeunload', function() {
-            if (countdownIntervalId) {
-                clearInterval(countdownIntervalId);
-                countdownIntervalId = null;
+            if (windowTimerId) {
+                clearTimeout(windowTimerId);
+                windowTimerId = null;
             }
         });
 
+        // ============================================================
+        // Start when DOM is ready
+        // ============================================================
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     })();
 </script>
 </body>
